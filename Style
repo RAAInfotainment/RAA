@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAA Infotainment</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="RAA Infotainment">
+            <button class="subscribe-btn">Subscribe</button>
+        </div>
+        <div class="search-sort">
+            <input type="text" id="videoSearch" placeholder="Search videos...">
+            <select id="sortVideos">
+                <option value="latest">Latest</option>
+                <option value="oldest">Oldest</option>
+                <option value="popular">Most Viewed</option>
+            </select>
+        </div>
+    </header>
+
+    <main>
+        <section id="videos">
+            <h2>Videos</h2>
+            <div class="video-container" id="videoList"></div>
+        </section>
+        <section id="shorts">
+            <h2>Shorts</h2>
+            <div class="search-sort">
+                <input type="text" id="shortSearch" placeholder="Search shorts...">
+                <select id="sortShorts">
+                    <option value="latest">Latest</option>
+                    <option value="popular">Most Liked</option>
+                </select>
+            </div>
+            <div class="video-container" id="shortList"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+import API_KEY from './config.js';  // Import API Key securely
+
+const CHANNEL_ID = 'UCEhSpfE0RGtepNTdtjz4qpA'; // Un YouTube Channel ID podu
+
+async function fetchVideos() {
+    try {
+        let url = https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=10;
+
+        let response = await fetch(url);
+        let data = await response.json();
+        let videoContainer = document.getElementById('videoList');
+
+        videoContainer.innerHTML = ''; // Clear previous results
+
+        data.items.forEach(item => {
+            if (item.id.videoId) {
+                let videoHTML = `
+                    <div class="video-card">
+                        <iframe src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
+                        <h3>${item.snippet.title}</h3>
+                        <button class="like-btn">Like</button>
+                        <button class="share-btn">Share</button>
+                        <button class="comment-btn">Comment</button>
+                    </div>`;
+                videoContainer.innerHTML += videoHTML;
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching videos:", error);
+    }
+}
+
+fetchVideos();
