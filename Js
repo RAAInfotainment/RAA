@@ -1,17 +1,19 @@
-import API_KEY from './config.js';  // Import API Key securely
+// Wait for config.js to load before executing
+document.addEventListener("DOMContentLoaded", function() {
+    fetchVideos();
+    fetchShorts();
+});
 
-const CHANNEL_ID = 'UCEhSpfE0RGtepNTdtjz4qpA'; // Un YouTube Channel ID podu
-
+// Function to fetch videos
 async function fetchVideos() {
+    let url = https://www.googleapis.com/youtube/v3/search?key=${CONFIG.API_KEY}&channelId=${CONFIG.CHANNEL_ID}&part=snippet,id&order=date&maxResults=10&type=video;
+    
     try {
-        let url = https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=10;
-
         let response = await fetch(url);
         let data = await response.json();
         let videoContainer = document.getElementById('videoList');
-
         videoContainer.innerHTML = ''; // Clear previous results
-
+        
         data.items.forEach(item => {
             if (item.id.videoId) {
                 let videoHTML = `
@@ -30,4 +32,52 @@ async function fetchVideos() {
     }
 }
 
-fetchVideos();
+// Function to fetch shorts
+async function fetchShorts() {
+    let url = https://www.googleapis.com/youtube/v3/search?key=${CONFIG.API_KEY}&channelId=${CONFIG.CHANNEL_ID}&part=snippet,id&order=date&maxResults=5&type=video&videoDuration=short;
+    
+    try {
+        let response = await fetch(url);
+        let data = await response.json();
+        let shortContainer = document.getElementById('shortList');
+        shortContainer.innerHTML = ''; // Clear previous results
+        
+        data.items.forEach(item => {
+            if (item.id.videoId) {
+                let shortHTML = `
+                    <div class="video-card">
+                        <iframe src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
+                        <h3>${item.snippet.title}</h3>
+                        <button class="like-btn">Like</button>
+                        <button class="share-btn">Share</button>
+                        <button class="comment-btn">Comment</button>
+                    </div>`;
+                shortContainer.innerHTML += shortHTML;
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching shorts:", error);
+    }
+}
+
+// Search Videos
+document.getElementById('videoSearch').addEventListener('input', function() {
+    let searchTerm = this.value.toLowerCase();
+    let videos = document.querySelectorAll('#videoList .video-card');
+
+    videos.forEach(video => {
+        let title = video.querySelector('h3').innerText.toLowerCase();
+        video.style.display = title.includes(searchTerm) ? 'block' : 'none';
+    });
+});
+
+// Search Shorts
+document.getElementById('shortSearch').addEventListener('input', function() {
+    let searchTerm = this.value.toLowerCase();
+    let shorts = document.querySelectorAll('#shortList .video-card');
+
+    shorts.forEach(short => {
+        let title = short.querySelector('h3').innerText.toLowerCase();
+        short.style.display = title.includes(searchTerm) ? 'block' : 'none';
+    });
+});
